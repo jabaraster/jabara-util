@@ -1,7 +1,7 @@
 module Jabara.UtilSpec (spec) where
 
 import Test.Hspec
-
+import GHC.Base
 import Jabara.Util
 
 spec :: Spec
@@ -17,3 +17,7 @@ spec = do
             overlap (10::Int,20) (0,5) `shouldBe` Nothing
         it "overlap (10::Int,20) (0,10)" $ do
             overlap (10::Int,20) (0,10) `shouldBe` Just (10,10)
+        it "overlap (10::Int,20) (10,15)" $ do
+            overlap (10::Int,20) (10,15) `shouldBe` Just (10,15)
+        it "overlap (10::Int,20) (15,25)" $ do
+            overlap (10::Int,20) (15,25) `shouldBe` Just (15,20)
