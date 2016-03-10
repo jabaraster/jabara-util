@@ -31,3 +31,4 @@ test-suite test
   build-depends: base
                , jabara-util
                , hspec >= 2.0.0
+  other-modules: Jabara.UtilSpec

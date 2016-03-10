@@ -1,9 +1,25 @@
 module Jabara.Util (
     overlap
+    , comma
+    , commaS
+    , toFirstCharLower
 ) where
 
-import GHC.Base
+import Data.Char (toLower)
+import Data.List (reverse, concat, zip, cycle)
 import Data.Tuple (fst, snd)
+import GHC.Base
+import GHC.Show (Show(..))
+
+comma :: String -> String
+comma s = concat $ reverse [[n]++c|(c,n)<- zip ("":(cycle ["","",","]))  (reverse s)]
+
+commaS :: Show a => a -> String
+commaS = comma . show
+
+toFirstCharLower :: String -> String
+toFirstCharLower "" = ""
+toFirstCharLower s = (toLower $ head s):(drop 1 s)
 
 overlap :: Ord a => (a, a) -> (a, a) -> Maybe (a, a)
 overlap a1 a2 = let na1 = n a1
@@ -17,7 +33,7 @@ overlap a1 a2 = let na1 = n a1
                | otherwise = (s, f)
 
     core :: Ord a => (a, a) -> (a, a) -> Maybe (a, a)
-    core r1@(r1Start, r1End) r2@(r2Start, r2End)
+    core (r1Start, r1End) r2@(r2Start, r2End)
         -- r1Start <= r2Startが保証されている
 
         --  r1                       r1
