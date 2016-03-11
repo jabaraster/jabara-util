@@ -10,6 +10,7 @@ import Data.List (reverse, concat, zip, cycle)
 import Data.Tuple (fst, snd)
 import GHC.Base
 import GHC.Show (Show(..))
+import Prelude (head, drop)
 
 comma :: String -> String
 comma s = concat $ reverse [[n]++c|(c,n)<- zip ("":(cycle ["","",","]))  (reverse s)]
