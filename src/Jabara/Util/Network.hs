@@ -3,6 +3,7 @@ module Jabara.Util.Network (
 ) where
 
 import Network.Socket (PortNumber(..))
+import Text.Read (readMaybe)
 
 parsePortNumber :: String -> Either String PortNumber
 parsePortNumber s = case readMaybe s of
