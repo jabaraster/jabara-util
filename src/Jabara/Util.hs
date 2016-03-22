@@ -2,11 +2,14 @@ module Jabara.Util (
     overlap
     , comma
     , commaS
+    , listToMap
+    , listToListMap
     , toFirstCharLower
 ) where
 
 import Data.Char (toLower)
 import Data.List (reverse, concat, zip, cycle)
+import qualified Data.Map as Map (Map, empty, singleton, insert, insertWith)
 import Data.Tuple (fst, snd)
 import GHC.Base
 import GHC.Show (Show(..))
@@ -17,6 +20,16 @@ comma s = concat $ reverse [[n]++c|(c,n)<- zip ("":(cycle ["","",","]))  (revers
 
 commaS :: Show a => a -> String
 commaS = comma . show
+
+listToMap :: Ord k => (a -> k) -> [a] -> Map.Map k a
+listToMap _ []     = Map.empty
+listToMap f [a]    = Map.singleton (f a) a
+listToMap f (a:as) = Map.insert (f a) a $ listToMap f as
+
+listToListMap :: Ord k => (a -> k) -> [a] -> Map.Map k [a]
+listToListMap _ []     = Map.empty
+listToListMap f [a]    = Map.singleton (f a) [a]
+listToListMap f (a:as) = Map.insertWith (++) (f a) [a] $ listToListMap f as
 
 toFirstCharLower :: String -> String
 toFirstCharLower "" = ""

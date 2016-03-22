@@ -2,6 +2,9 @@ module Jabara.Util.Network (
   parsePortNumber
 ) where
 
+import Data.Either
+import GHC.Base
+import GHC.Num
 import Network.Socket (PortNumber(..))
 import Text.Read (readMaybe)
 
