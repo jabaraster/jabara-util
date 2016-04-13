@@ -1,19 +1,20 @@
 module Jabara.Util (
     overlap
-    , comma
-    , commaS
-    , listToMap
-    , listToListMap
-    , toFirstCharLower
+  , comma
+  , commaS
+  , listToMap
+  , listToListMap
+  , toFirstCharLower
+  , omittedFirstCharLower
 ) where
 
-import Data.Char (toLower)
-import Data.List (reverse, concat, zip, cycle)
+import           Data.Char (toLower)
+import           Data.List (reverse, concat, zip, cycle)
 import qualified Data.Map as Map (Map, empty, singleton, insert, insertWith)
-import Data.Tuple (fst, snd)
-import GHC.Base
-import GHC.Show (Show(..))
-import Prelude (head, drop)
+import           Data.Tuple (fst, snd)
+import           GHC.Base
+import           GHC.Show (Show(..))
+import           Prelude (head, drop, length)
 
 comma :: String -> String
 comma s = concat $ reverse [[n]++c|(c,n)<- zip ("":(cycle ["","",","]))  (reverse s)]
@@ -34,6 +35,11 @@ listToListMap f (a:as) = Map.insertWith (++) (f a) [a] $ listToListMap f as
 toFirstCharLower :: String -> String
 toFirstCharLower "" = ""
 toFirstCharLower s = (toLower $ head s):(drop 1 s)
+
+type AccessorName = String
+type AccessorPrefix = String
+omittedFirstCharLower :: AccessorPrefix -> AccessorName -> String
+omittedFirstCharLower prefix = toFirstCharLower . drop (length prefix)
 
 overlap :: Ord a => (a, a) -> (a, a) -> Maybe (a, a)
 overlap a1 a2 = let na1 = n a1

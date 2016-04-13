@@ -4,8 +4,10 @@ module Jabara.Util.Network (
 ) where
 
 import Data.Either
+import Data.List (takeWhile)
 import GHC.Base
 import GHC.Num
+import GHC.Show
 import Network.Socket (withSocketsDo, getAddrInfo
                       , socket, Family(AF_INET), SocketType(Datagram), defaultProtocol
                       , connect, addrAddress, getSocketName, close
