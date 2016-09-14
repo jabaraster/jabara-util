@@ -1,5 +1,5 @@
 name:                jabara-util
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Simple project template from stack
 description:         Please see README.md
 homepage:            http://github.com/githubuser/jabara-util#readme
@@ -18,6 +18,9 @@ library
   build-depends:       base >= 4.7 && < 5
                      , network
                      , containers
+                     , bytestring
+                     , base64-bytestring
+                     , text
   exposed-modules: Jabara.Util
                  , Jabara.Util.Network
 

@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Jabara.Util (
     overlap
   , comma
@@ -6,15 +7,21 @@ module Jabara.Util (
   , listToListMap
   , toFirstCharLower
   , omittedFirstCharLower
+  , parseDataUrlData
 ) where
 
+import           Data.ByteString (ByteString)
+import qualified Data.ByteString.Base64 as B64 (decode)
 import           Data.Char (toLower)
+import           Data.Either (Either(..))
 import           Data.List (reverse, concat, zip, cycle)
 import qualified Data.Map as Map (Map, empty, singleton, insert, insertWith)
+import qualified Data.Text as T (Text, splitOn)
+import qualified Data.Text.Encoding as T (encodeUtf8)
 import           Data.Tuple (fst, snd)
 import           GHC.Base
 import           GHC.Show (Show(..))
-import           Prelude (head, drop, length)
+import           Prelude ((!!), head, drop, length)
 
 comma :: String -> String
 comma s = concat $ reverse [[n]++c|(c,n)<- zip ("":(cycle ["","",","]))  (reverse s)]
@@ -78,4 +85,16 @@ overlap a1 a2 = let na1 = n a1
         | r1Start <= r2Start = Just (r2Start, r1End)
 
         | otherwise = error "out of supposition."
+
+parseDataUrlData :: Maybe T.Text -> Either String ByteString
+parseDataUrlData mUrl = case mUrl of
+                   Nothing    -> Left ""
+                   Just image -> 
+                     let
+                         tokens = T.splitOn "base64," image
+                     in
+                         if length tokens < 2 then
+                             Left ""
+                           else
+                             B64.decode $ T.encodeUtf8 (tokens!!1)
 
