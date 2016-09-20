@@ -1,8 +1,9 @@
 module Jabara.UtilSpec (spec) where
 
-import Test.Hspec
 import GHC.Base
 import Jabara.Util
+import Test.Hspec
+import Test.Hspec.QuickCheck (prop)
 
 spec :: Spec
 spec = do
@@ -21,3 +22,12 @@ spec = do
             overlap (10::Int,20) (10,15) `shouldBe` Just (10,15)
         it "overlap (10::Int,20) (15,25)" $ do
             overlap (10::Int,20) (15,25) `shouldBe` Just (15,20)
+        prop "overlap test by QuickCheck" test_overlap
+
+
+test_overlap :: (Integer, Integer) -> (Integer, Integer) -> Bool
+test_overlap a b = let m = overlap a b
+                   in
+                     case m of
+                       Nothing -> True
+                       Just (la,lb) -> la <= lb
