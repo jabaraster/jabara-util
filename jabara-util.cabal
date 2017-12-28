@@ -23,6 +23,7 @@ library
                      , text
   exposed-modules: Jabara.Util
                  , Jabara.Util.Network
+                 , Jabara.Util.Month
 
 source-repository head
   type:     git
