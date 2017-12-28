@@ -10,15 +10,28 @@ module Jabara.Util.Month (
   , monthsToEndOfSchoolYear
 ) where
 
+import           Data.List          (sort)
 import           Data.Time.Calendar
+import           Text.Read          (readMaybe)
 
 newtype Month = Month { mDay :: Day }
-    deriving (Eq, Read, Ord)
+    deriving (Eq, Ord)
 instance Show Month where
     show month = let (y, m, _) = toGregorian $ mDay month
                  in
                      if m < 10 then (show y) ++ "/0" ++ (show m)
                                else (show y) ++ "/"  ++ (show m)
+instance Read Month where
+    readsPrec _ ""       = []
+    readsPrec _ s
+         | length s /= 7 = []
+         | otherwise     = let ms = take 4 s
+                               ds = drop 5 s
+                           in  case (readMaybe ms, readMaybe ds) of
+                               (Nothing, _)     -> []
+                               (_, Nothing)     -> []
+                               (Just m, Just d) -> [(month m d, "")]
+
 month :: Integer -> Int -> Month
 month y m = Month $ fromGregorian y m 1
 

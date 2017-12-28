@@ -16,6 +16,7 @@ library
   hs-source-dirs:      src
   default-language:    Haskell2010
   build-depends:       base >= 4.7 && < 5
+                     , time
                      , network
                      , containers
                      , bytestring
@@ -36,6 +37,8 @@ test-suite test
   hs-source-dirs:    test
   ghc-options:       -Wall
   build-depends: base
+               , time
                , jabara-util
                , hspec >= 2.0.0
   other-modules: Jabara.UtilSpec
+               , Jabara.Util.MonthSpec
