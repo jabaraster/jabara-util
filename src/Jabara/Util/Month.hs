@@ -2,6 +2,7 @@ module Jabara.Util.Month (
     Month(mDay)
   , month
   , monthFromDay
+  , separateMonth
   , dayFromMonth
   , dayToMonth
   , addMonth
@@ -17,7 +18,7 @@ import           Text.Read          (readMaybe)
 newtype Month = Month { mDay :: Day }
     deriving (Eq, Ord)
 instance Show Month where
-    show month = let (y, m, _) = toGregorian $ mDay month
+    show month = let (y, m) = separateMonth month
                  in
                      if m < 10 then (show y) ++ "/0" ++ (show m)
                                else (show y) ++ "/"  ++ (show m)
@@ -32,8 +33,19 @@ instance Read Month where
                                (_, Nothing)     -> []
                                (Just m, Just d) -> [(month m d, "")]
 
+instance Enum Month where
+    fromEnum mnt = let (y, m) = separateMonth mnt
+                   in  fromInteger (y * 100 + (toInteger m))
+    toEnum   val = let year = floor ((realToFrac val) / 100)
+                       m    = (toInteger val) - (year * 100)
+                   in  month year (fromInteger m)
+
 month :: Integer -> Int -> Month
 month y m = Month $ fromGregorian y m 1
+
+separateMonth :: Month -> (Integer, Int)
+separateMonth month = let (y, m, _) = toGregorian $ mDay month
+                      in  (y, m)
 
 dayToMonth :: Day -> Month
 dayToMonth d = Month d
