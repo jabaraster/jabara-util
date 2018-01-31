@@ -7,6 +7,7 @@ module Jabara.Util.Month (
   , dayToMonth
   , addMonth
   , isMarch
+  , toFiscalYear
   , toSchoolYear
   , monthsToEndOfSchoolYear
 ) where
@@ -68,6 +69,9 @@ toSchoolYear :: Month -> Integer
 toSchoolYear m = case toGregorian $ mDay m of
                    (y, m, _) | m <= 3    -> y - 1
                              | otherwise -> y
+
+toFiscalYear :: Month -> Integer
+toFiscalYear = toSchoolYear
 
 monthsToEndOfSchoolYear :: Month -> [Month]
 monthsToEndOfSchoolYear startMonth = core 0 []
