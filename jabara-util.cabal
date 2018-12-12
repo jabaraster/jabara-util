@@ -36,6 +36,11 @@ test-suite test
   main-is:           Spec.hs
   hs-source-dirs:    test
   ghc-options:       -Wall
+                     -Wunused-imports
+                     -Wunused-binds
+                     -Wunused-local-binds
+                     -Wunused-pattern-binds
+                     -Wunused-matches
   build-depends: base
                , time
                , jabara-util
